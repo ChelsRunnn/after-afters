@@ -12,9 +12,8 @@ $(function () {
   var sports = "&classificationName=sports&";
   var other = "";
   // API keys
-  var joshGeoKey = "1a63f18a56394acdaa8c0d4783ce52bc";
-  var antGeoKey = "abbaf448e8fd46d789223be439a4096c";
-  var antTicKey = "CHo9U7G9NvQH3YdZsAJYBoNV5by3z3Hq";
+  var geoapifyKey = "3dc5f096a6ff41bba907b7385aa92f35";
+  var ticketmasterKey = "W7XoXZBpo2G2SkM4TNQTCgXdZ4nIIpDZ";
   // event listeners
   var searchBtn = $("#searchBtn");
   var checkBoxes = $(".custom-checkbox");
@@ -62,7 +61,7 @@ $(function () {
     // setting the date at top of search results
     dateRange.text(`${dateConvert(fromDate.value)} - ${dateConvert(toDate.value)}`);
     // ticketmaster API link with custom variables
-    var ticketmasterUrl = "https://app.ticketmaster.com/discovery/v2/events.json?" + checkBox + "size=" + size + "&city=[philadelphia]&localStartDateTime=" + fromDate.value + "T00:00:00," + toDate.value + "T23:59:59&apikey=" + antTicKey;
+    var ticketmasterUrl = "https://app.ticketmaster.com/discovery/v2/events.json?" + checkBox + "size=" + size + "&city=[philadelphia]&localStartDateTime=" + fromDate.value + "T00:00:00," + toDate.value + "T23:59:59&apikey=" + ticketmasterKey;
     fetch(ticketmasterUrl)
       .then(function (response) {
         return response.json();
@@ -141,14 +140,14 @@ $(function () {
             // latitude and longitude of the venue that was clicked
             var foodLat = latLonArr[buttonNumber][0];
             var foodLon = latLonArr[buttonNumber][1];
-            var isolineURL = "https://api.geoapify.com/v1/isoline?lat=" + foodLat + "&lon=" + foodLon + "&type=time&mode=walk&range=900&apiKey=" + joshGeoKey;
+            var isolineURL = "https://api.geoapify.com/v1/isoline?lat=" + foodLat + "&lon=" + foodLon + "&type=time&mode=walk&range=900&apiKey=" + geoapifyKey;
             var isoline = "";
             fetch(isolineURL)
               .then((response) => response.json())
               .then(function (result) {
                 isoline = result.properties.id;
                 // geoapify API url with custom variables
-                var geoapifyUrl = "https://api.geoapify.com/v2/places?categories=catering&conditions=named&filter=geometry:" + isoline + "&bias=proximity:" + foodLon + "," + foodLat + "&lang=en&limit=" + limit + "&apiKey=" + antGeoKey;
+                var geoapifyUrl = "https://api.geoapify.com/v2/places?categories=catering&conditions=named&filter=geometry:" + isoline + "&bias=proximity:" + foodLon + "," + foodLat + "&lang=en&limit=" + limit + "&apiKey=" + geoapifyKey;
                 fetch(geoapifyUrl)
                   .then(function (response) {
                     return response.json();
